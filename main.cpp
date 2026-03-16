@@ -13,7 +13,7 @@ int main(int argc, char const *argv[])
 
     Sprite testSp;
 
-    testSp.Load("assets/test.png");
+    testSp.Load("../assets/test.png");
 
     master.Frame=0;
 
