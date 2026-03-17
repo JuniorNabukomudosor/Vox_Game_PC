@@ -1,5 +1,5 @@
 #pragma once
-#include <Engine/AssetTypeEnum.h>
+#include <Engine/Assets/AssetTypeEnum.h>
 
 class IAsset
 {

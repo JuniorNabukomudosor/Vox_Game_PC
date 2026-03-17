@@ -1,4 +1,4 @@
-#include <Engine/IAsset.h>
+#include <Engine/Assets/IAsset.h>
 
 IAsset::IAsset():
 type(AssetType::Uknown){}

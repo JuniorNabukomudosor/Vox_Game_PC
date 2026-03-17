@@ -1,7 +1,6 @@
 #include <iostream>
 #include <raylib.h>
 #include <GameMaster.h>
-#include <Engine/Sprite.h>
 
 int main(int argc, char const *argv[])
 {

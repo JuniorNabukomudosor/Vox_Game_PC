@@ -1,11 +1,11 @@
 #pragma once
 #include <raylib.h>
-#include <Engine/IAsset.h>
+#include <Engine/Assets/IAsset.h>
 #include <memory>
 #include <unordered_map>
 #include <vector>
 #include <string>
-#include <Engine/AssetTypeEnum.h>
+#include <Engine/Assets/AssetTypeEnum.h>
 
 class AssetManager
 {

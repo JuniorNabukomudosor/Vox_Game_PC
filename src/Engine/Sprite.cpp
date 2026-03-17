@@ -1,4 +1,4 @@
-#include <Engine/Sprite.h>
+#include <Engine/Render/Sprite.h>
 
 Sprite::Sprite() : IAsset(AssetType::Sprite)
 {}

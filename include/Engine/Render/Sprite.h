@@ -1,6 +1,6 @@
 #pragma once
 #include <raylib.h>
-#include <Engine/IAsset.h>
+#include <Engine/Assets/IAsset.h>
 
 class Sprite : public IAsset
 {
