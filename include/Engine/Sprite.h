@@ -11,5 +11,6 @@ class Sprite : public IAsset
     Sprite();
     void Load(const char * path) override;
     void Draw(Vector2& position, Color tint);
+    void DrawCutted(Vector2& position, Rectangle drawRect, Color tint);
     void Release() override;
 };
