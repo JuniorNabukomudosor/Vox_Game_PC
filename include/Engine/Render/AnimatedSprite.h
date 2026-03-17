@@ -10,15 +10,20 @@ class AnimatedSprite : public IAsset
     Rectangle frameRect;
     unsigned short totalFrames;
     unsigned short currentFrame;
+    float currentAnimationTime;
+    float frameDuration;
+    float animationDuration;
+
 
     public:
 
     AnimatedSprite();
     AnimatedSprite(Vector2 frameSize);
     void Load(const char* path) override;
+    void Load(const char* path, Vector2 targetSpriteSize);
     void SetAnimationFrameRect(Vector2 frameSize);
-    void SetAnimationTotalFrames(unsigned short total);
-    unsigned short DrawAnimation(Vector2& position, Color tint);
+    void SetAnimationTotalFramesAndDuration(unsigned short total, float duration);
+    unsigned short DrawAnimation(Vector2& position, float deltaTime, Color tint);
     void Release() override;
 
 };

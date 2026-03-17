@@ -14,11 +14,7 @@ int main(int argc, char const *argv[])
 
     master.Frame=0;
 
-    AnimatedSprite testSp = AnimatedSprite(Vector2{32.0f, 32.0f});
-    testSp.Load("../assets/Hand_SpriteAnim.png");
-    testSp.SetAnimationTotalFrames(7);
-
-    Vector2 animPos = Vector2{400.0f, 300.0f};
+    Vector2 animPos = Vector2{0, 0};
 
     SetTargetFPS(30);
 
@@ -28,15 +24,9 @@ int main(int argc, char const *argv[])
         BeginDrawing();
         ClearBackground(BLACK);
         master.Draw();
-
-        testSp.DrawAnimation(animPos, WHITE);
-
         EndDrawing();
     }
     master.Exit();
-
-    testSp.Release();
-
     CloseWindow();
     return 0;
 }
