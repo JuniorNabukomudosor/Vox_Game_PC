@@ -22,7 +22,7 @@ class GameMaster
     const std::string gameName;
 
     void Draw();
-    void Update();
+    void Update(float deltaTime);
     void Exit();
 
     GameMaster(std::string& gameName);

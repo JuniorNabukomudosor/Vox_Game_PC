@@ -5,7 +5,7 @@ GameMaster::GameMaster(std::string& gameName)
 : gameName(gameName), serverManager(WebManager()), Debug(true)
 {}
 
-void GameMaster::Update()
+void GameMaster::Update(float deltaTime)
 {
 
 }

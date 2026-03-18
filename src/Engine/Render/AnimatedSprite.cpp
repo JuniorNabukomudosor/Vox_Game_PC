@@ -1,12 +1,12 @@
 #include <Engine/Render/AnimatedSprite.h>
 
 AnimatedSprite::AnimatedSprite() 
-: IAsset(AssetType::Animated_Sprite), frameRect(Rectangle{0.0f, 0.0f, 32.0f, 32.0f}),
+: IAsset(), frameRect(Rectangle{0.0f, 0.0f, 32.0f, 32.0f}),
 sprite(Sprite()), totalFrames(0), currentFrame(0), animationDuration(1),
 currentAnimationTime(0), frameDuration(0.1f) {}
 
 AnimatedSprite::AnimatedSprite(Vector2 frameSize)
-: IAsset(AssetType::Animated_Sprite), frameRect(Rectangle{0.0f,0.0f, frameSize.x, frameSize.y}),
+: IAsset(), frameRect(Rectangle{0.0f,0.0f, frameSize.x, frameSize.y}),
 sprite(Sprite()), totalFrames(0), currentFrame(0), animationDuration(1),
 currentAnimationTime(0), frameDuration(0.1f) {}
 

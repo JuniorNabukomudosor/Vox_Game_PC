@@ -1,6 +1,6 @@
 #include <Engine/Render/Sprite.h>
 
-Sprite::Sprite() : IAsset(AssetType::Sprite)
+Sprite::Sprite() : IAsset()
 {}
 
 void Sprite::Load(const char* path)

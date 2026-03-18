@@ -13,17 +13,19 @@ class AssetManager
 
     std::unordered_map<std::string, std::shared_ptr<IAsset>> assetsByName;
     std::vector<std::shared_ptr<IAsset>> assets;
+    std::vector<std::shared_ptr<IAsset>> ToDeleteAssets;
     
     public:
     
     AssetManager();
-    
-    bool LoadAssetsFromFolderRecursive(char* baseFolder, AssetType type);
-    bool LoadEspecificAsset(char* path, AssetType type);
-    
+    void SaveAllAssets(char* targetFilePath);
+    void SaveAsset(std::shared_ptr<IAsset> asset, char* targetFilePath);
+    void LoadAssets(char* assetConfigFilePath);
     std::shared_ptr<IAsset> GetAssetByName(std::string& name);
 
-    bool ReleaseAssets();
+    void DeleteAssetByName(std::string& name);
+    void ReleaseAllAssets();
+
 
     ~AssetManager();
 };
