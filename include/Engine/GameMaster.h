@@ -1,29 +1,31 @@
 #pragma once
-#include <Engine/DataEntities/Player.h>
 #include <string>
+#include <Engine/DataEntities/Player.h>
+#include <Engine/Assets/AssetManager.h>
 #include <Engine/Web/WebManager.h>
-//#include<Engine/AssetManager.h>
+#include <Engine/DevelopmentTools/AssetTools.h>
 
 
 class GameMaster
 {
     private:
 
-    WebManager serverManager;
-    //AssetManager assetManager;
+    AssetManager& assetManager;
+    WebManager& serverManager;
     Player P1;
     Player P2;
-    
 
     public:
 
     unsigned int Frame;
     bool Debug;
-    const std::string gameName;
+    bool ActiveAssetMenu;
+
+    GameMaster(AssetManager& assetManager_, WebManager& webManager_);
 
     void Draw();
+    void Start();
     void Update(float deltaTime);
     void Exit();
 
-    GameMaster(std::string& gameName);
 };
