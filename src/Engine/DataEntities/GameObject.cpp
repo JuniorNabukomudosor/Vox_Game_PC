@@ -13,5 +13,5 @@ void GameObject::SetAsset(std::shared_ptr<IAsset> asset)
 
 const AssetType GameObject::GetAssetType() const
 {
-    return this->Asset->type;
+    return this->Asset->GetAssetType();
 }

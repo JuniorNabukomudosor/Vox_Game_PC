@@ -27,7 +27,7 @@ class AssetManager
     //Save one asset
     bool SaveAsset(std::shared_ptr<IAsset> asset, const char* targetFilePath);
     //Load multiple assets from file(file must contain varios assets)
-    bool LoadAssetsM(const char* assetsFilePath);
+    bool LoadAssetPKG(const char* assetsFilePath);
     //Load One asset from file(file must contain only one asset)
     bool LoadAsset(const char* assetPath);
     std::shared_ptr<IAsset> GetAssetByName(std::string& name);

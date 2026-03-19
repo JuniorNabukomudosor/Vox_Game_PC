@@ -1,6 +1,7 @@
 #pragma once
-#include <raylib.h>
 #include <Engine/Assets/IAsset.h>
+
+class AnimatedSprite;
 
 class Sprite : public IAsset
 {
@@ -9,9 +10,11 @@ class Sprite : public IAsset
     
     public:
     Sprite();
-    void Load(const char * path) override;
-    void Load(const char * path, int width, int height);
+    void Load(const char * path, const char* assetName) override;
+    void Load(const char * path, const char* assetName, int width, int height);
     void Draw(Vector2& position, Color tint);
     void DrawCutted(Vector2& position, Rectangle drawRect, Color tint);
     void Release() override;
+
+    friend class AnimatedSprite;
 };

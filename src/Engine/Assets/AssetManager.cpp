@@ -6,6 +6,26 @@ assetsByName(std::unordered_map<std::string, std::shared_ptr<IAsset>>()),
 DeleteTrashCan(std::vector<std::shared_ptr<IAsset>>())
 {}
 
+std::shared_ptr<IAsset> AssetManager::GetAssetByName(std::string& name)
+{
+    auto result = this->assetsByName.find(name);
+    if(result != assetsByName.end())
+    {
+        return result->second;
+    }else
+    {
+        return nullptr;
+    }
+}
+
+void AssetManager::DeleteAssetByName(std::string& name)
+{
+    auto pointer = GetAssetByName(name);
+    if(pointer != nullptr)
+    {
+        DeleteTrashCan.push_back(pointer);
+    }
+}
 
 bool AssetManager::SaveAsset(std::shared_ptr<IAsset> asset, const char* targetFilePath)
 {
@@ -19,14 +39,14 @@ bool AssetManager::SaveAsset(std::shared_ptr<IAsset> asset, const char* targetFi
     }
 
     file.write(reinterpret_cast<const char *>(&(asset->assetData)), sizeof(asset->assetData));
-    std::cout<< TextFormat("Saved asset : %i", asset->assetData.strId) << std::endl;
+    std::cout<< TextFormat("Saved asset : %s", asset->assetData.strId) << std::endl;
     return true;
 }
 
 bool AssetManager::SaveAllAssets(const char* targetFilePath)
 {
 
-    std::string fullPath = std::string(targetFilePath) + ".voxasset";
+    std::string fullPath = std::string(targetFilePath) + ".voxassetpkg";
 
     std::ofstream file(targetFilePath, std::ios::binary);
     
@@ -44,7 +64,7 @@ bool AssetManager::SaveAllAssets(const char* targetFilePath)
     for(std::shared_ptr<IAsset>& asset : assets)
     {
         file.write(reinterpret_cast<const char*>(&asset->assetData), sizeof(asset->assetData));
-        std::cout<< TextFormat("Saved asset : %i", asset->assetData.strId) << std::endl;
+        std::cout<< TextFormat("Saved asset : %s", asset->assetData.strId) << std::endl;
     }
     return true;
 }
@@ -57,46 +77,43 @@ void AssetManager::AddAssetToLibrary(AssetData data)
     switch (data.type)
     {
         case AssetType::Sprite:
-        
+        {
             Sprite sprite = Sprite();
             //verificar variables pertinentes
             SpriteData spData= data.typeData.sprite;
             //hacer la carga delsprite
             if(spData.originalSize)
             {
-                sprite.Load(data.path);
+                sprite.Load(data.path, data.strId);
             }else
             {
-                sprite.Load(data.path, spData.width, spData.height);
+                sprite.Load(data.path, data.strId,spData.width, spData.height);
             }
             //asignar elasset data
             sprite.assetData=data;
             //asignar el puntero
             asset = std::make_shared<Sprite>(sprite);
             break;
+        }
 
         case AssetType::Animated_Sprite:
+        {
             AnimatedSprite anSprite = AnimatedSprite();
             AnimatedSpriteData animatedSPData = data.typeData.animatedSprite;
             //animationsetVariables
             anSprite.SetAnimationFrameRect(Vector2{(float)animatedSPData.frameSizeX, (float)animatedSPData.frameSizeY});
             anSprite.SetAnimationTotalFramesAndDuration(animatedSPData.totalFrames, animatedSPData.animationDuration);
-            if(spData.originalSize)
-            {
-                anSprite.Load(data.path);
-            }else
-            {
-                anSprite.Load(data.path, Vector2{(float)animatedSPData.frameSizeX*animatedSPData.totalFrames, (float)animatedSPData.frameSizeY});
-            }
+            anSprite.Load(data.path, data.strId,Vector2{(float)animatedSPData.frameSizeX*animatedSPData.totalFrames, (float)animatedSPData.frameSizeY});
             //asignar assetdata
             anSprite.assetData=data;
             asset=std::make_shared<AnimatedSprite>(anSprite);
             break;
+        }
     }
 
     this->assets.push_back(asset);
     this->assetsByName[data.strId]=asset;
-    std::cout<<TextFormat("Loaded asset %i from file", data.strId) << std::endl;
+    std::cout<<TextFormat("Loaded asset %s from file", data.strId) << std::endl;
 }
 
 bool AssetManager::LoadAsset(const char* assetPath)
@@ -123,9 +140,35 @@ bool AssetManager::LoadAsset(const char* assetPath)
     return true;
 }
 
-bool AssetManager::LoadAssetsM(const char* assetsFilePath)
+bool AssetManager::LoadAssetPKG(const char* assetsFilePath)
 {
+    //erificar extension
+    if(strstr(assetsFilePath, ".voxassetpkg")==NULL)
+    {
+        std::cout<<"El archivo no tiene la extension necesaria" << std::endl;
+        return false;
+    }
+
+    std::ifstream file(assetsFilePath, std::ios::binary);
     
+    if(!file)
+    {
+        std::cout<<"Error abriendo archivo" << std::endl;
+        return false;
+    }
+
+    //obtener primero el conteo de items guardado en el archivo
+    size_t count;
+    file.read(reinterpret_cast<char*>(&count), sizeof(size_t));
+
+    //iterar por sobre los assets del paquete
+    for(int i = 0; i++; i<count)
+    {
+        AssetData data;
+        file.read(reinterpret_cast<char*>(&data), sizeof(AssetData));
+        this->AddAssetToLibrary(data);
+    }
+    return true;
 }
 
 void AssetManager::ReleaseAllAssets()
@@ -148,4 +191,10 @@ void AssetManager::ClearTrashCan()
     }
 
     DeleteTrashCan.clear();
+}
+
+AssetManager::~AssetManager()
+{
+    this->ReleaseAllAssets();
+    this->ClearTrashCan();
 }
