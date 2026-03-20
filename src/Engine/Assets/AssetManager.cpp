@@ -35,11 +35,12 @@ bool AssetManager::SaveAsset(std::shared_ptr<IAsset> asset, const char* targetFi
 
     if(!file)
     {
+        std::cout << "Error: Could not open file for writing: " << fullPath << std::endl;
         return false;
     }
 
     file.write(reinterpret_cast<const char *>(&(asset->assetData)), sizeof(asset->assetData));
-    std::cout<< TextFormat("Saved asset : %s", asset->assetData.strId) << std::endl;
+    std::cout << "Saved asset : " << asset->assetData.strId << std::endl;
     return true;
 }
 
@@ -64,7 +65,7 @@ bool AssetManager::SaveAllAssets(const char* targetFilePath)
     for(std::shared_ptr<IAsset>& asset : assets)
     {
         file.write(reinterpret_cast<const char*>(&asset->assetData), sizeof(asset->assetData));
-        std::cout<< TextFormat("Saved asset : %s", asset->assetData.strId) << std::endl;
+        std::cout << "Saved asset : " << asset->assetData.strId << std::endl;
     }
     return true;
 }
@@ -113,7 +114,7 @@ void AssetManager::AddAssetToLibrary(AssetData data)
 
     this->assets.push_back(asset);
     this->assetsByName[data.strId]=asset;
-    std::cout<<TextFormat("Loaded asset %s from file", data.strId) << std::endl;
+    std::cout << "Loaded asset " << data.strId << " from file" << std::endl;
 }
 
 bool AssetManager::LoadAsset(const char* assetPath)

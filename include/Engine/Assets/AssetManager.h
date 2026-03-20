@@ -9,6 +9,8 @@
 #include<iostream>
 #include<algorithm>
 
+class AssetTools;
+
 class AssetManager
 {
     private:
@@ -35,4 +37,6 @@ class AssetManager
     void ReleaseAllAssets();
     void ClearTrashCan();
     ~AssetManager();
+
+    friend class AssetTools;
 };
