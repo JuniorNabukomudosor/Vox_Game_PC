@@ -1,4 +1,4 @@
-#include<Engine/DataEntities/GameObject.h>
+#include<Engine/DataEntities/GameObjects/GameObject.h>
 
 GameObject::GameObject()
 {}

@@ -3,7 +3,7 @@
 
 struct Transform2D
 {
-    Vector2 Position;
-    Vector2 Scale;
+    float X, Y;
+    float Scale_X, Scale_Y;
     float Rotation;
 };
