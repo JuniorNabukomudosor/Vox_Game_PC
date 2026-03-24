@@ -42,6 +42,12 @@ void AssetTools::CreateAssetMenu(AssetManager& manager)
             std::cin.ignore();
             std::getline(std::cin, response_str);
 
+            if(response_str.size()>=sizeof(data.strId))
+            {
+                std::cout<<TextFormat("el nombre ha excedido el maximo de lingitud (%i)", sizeof(data.strId)) << std::endl;
+                break;
+            }
+
             strcpy(data.strId, response_str.c_str());
             strcpy(data.path, path.c_str());
             data.typeData.sprite = SpriteData();
@@ -83,6 +89,12 @@ void AssetTools::CreateAssetMenu(AssetManager& manager)
             response_str="";
             std::cin.ignore();
             std::getline(std::cin, response_str);
+
+            if(response_str.size()>=sizeof(data.strId))
+            {
+                std::cout<<TextFormat("el nombre ha excedido el maximo de lingitud (%i)", sizeof(data.strId)) << std::endl;
+                break;
+            }
 
             strcpy(data.strId, response_str.c_str());
             strcpy(data.path, path.c_str());
@@ -134,6 +146,70 @@ void AssetTools::SaveAssetMenu(AssetManager& manager)
     }
 }
 
+void AssetTools::SaveAllAssetsMenu(AssetManager& manager)
+{
+    std::string savePath;
+    std::cout << "Save path: ";
+    std::cin.ignore();
+    std::getline(std::cin, savePath);
+
+    if(manager.SaveAllAssets(savePath.c_str()))
+    {
+        std::cout<< "Assets packages saved successfully" << std::endl;
+    }else
+    {
+        std::cout<<"Failed to save Assets into package"<< std::endl;
+    }
+}
+
+void AssetTools::LoadAssetsMenu(AssetManager& manager)
+{
+    int typeOfLoad;
+    std::cout<<"Tipo de carga: \n1- un solo asset \n2- asset package\n3-Cancelar" <<std::endl;
+    std::cin>>typeOfLoad;
+    std::string filePath;
+
+    switch(typeOfLoad)
+    {
+        case 1:
+        {
+            std::cin.ignore();
+            std::cout<<".voxasset path: ";
+            std::getline(std::cin, filePath);
+            std::cout<<"Result:  " << manager.LoadAsset(filePath.c_str());
+            break;
+        }
+        case 2:
+        {
+            std::cin.ignore();
+            std::cout<<".voxassetpkg path: ";
+            std::getline(std::cin, filePath);
+            std::cout<<"Result:  " << manager.LoadAssetPKG(filePath.c_str());
+            break;
+        }
+        case 3:
+        {
+            std::cout<<"Cancelling" << std::endl;
+            break;
+        }
+        default: 
+        {
+            LoadAssetsMenu(manager);
+            break;
+        }
+    }
+}
+
+void AssetTools::ShowLoadedAssets(AssetManager& manager)
+{
+    std::cout << "-------disponible assets--------" << std::endl;
+    for(auto& asset : manager.assets)
+    {
+        std::cout << *asset << std::endl;
+    }
+    std::cout << "---------------------------------" << "\n\n";
+}
+
 void AssetTools::RunAssetMenu(AssetManager& manager)
 {
     std::string menuStr = R"(
@@ -143,12 +219,6 @@ void AssetTools::RunAssetMenu(AssetManager& manager)
     4- Load Assets
     5- View Loaded Assets
     0- Exit Asset Menu)";
-
-    std::string createAssetMenu = R"(
-    1- Create Simple Sprite
-    2- Create Animated Sprite
-    0- Cancel
-    )";
 
     int response = -1;
     bool shouldExit = false;
@@ -168,6 +238,21 @@ void AssetTools::RunAssetMenu(AssetManager& manager)
             case 2:
             {
                 SaveAssetMenu(manager);
+                break;
+            }
+            case 3:
+            {
+                SaveAllAssetsMenu(manager);
+                break;
+            }
+            case 4:
+            {
+                LoadAssetsMenu(manager);
+                break;
+            }
+            case 5:
+            {
+                ShowLoadedAssets(manager);
                 break;
             }
             case 0:

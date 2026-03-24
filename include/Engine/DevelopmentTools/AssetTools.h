@@ -8,6 +8,7 @@ class AssetTools
     static void SaveAssetMenu(AssetManager& manager);
     static void SaveAllAssetsMenu(AssetManager& manager);
     static void LoadAssetsMenu(AssetManager& manager);
+    static void ShowLoadedAssets(AssetManager& manager);
 
     public:
     //Menu para la carga de assets,  detiene el loop del juego, mientras se ve el programa en la consola

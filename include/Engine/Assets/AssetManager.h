@@ -35,7 +35,7 @@ class AssetManager
     std::shared_ptr<IAsset> GetAssetByName(std::string& name);
     void DeleteAssetByName(std::string& name);
     void ReleaseAllAssets();
-    void ClearTrashCan();
+    void ClearTrashCan(bool destructor);
     ~AssetManager();
 
     friend class AssetTools;

@@ -49,7 +49,7 @@ bool AssetManager::SaveAllAssets(const char* targetFilePath)
 
     std::string fullPath = std::string(targetFilePath) + ".voxassetpkg";
 
-    std::ofstream file(targetFilePath, std::ios::binary);
+    std::ofstream file(fullPath, std::ios::binary);
     
     if(!file)
     {
@@ -74,6 +74,14 @@ void AssetManager::AddAssetToLibrary(AssetData data)
 {
     std::shared_ptr<IAsset> asset;
     //hacer la instanciacion
+
+    //evitar duplicads por nombre
+    auto result = this->assetsByName.find(data.strId);
+    if(result != assetsByName.end())
+    {
+        std::cout << TextFormat("Ya hay un asset con el nombre %s,  saltando...", data.strId) << std::endl;
+        return;
+    }  
 
     switch (data.type)
     {
@@ -110,11 +118,11 @@ void AssetManager::AddAssetToLibrary(AssetData data)
             asset=std::make_shared<AnimatedSprite>(anSprite);
             break;
         }
-    }
+    } 
 
     this->assets.push_back(asset);
-    this->assetsByName[data.strId]=asset;
-    std::cout << "Loaded asset " << data.strId << " from file" << std::endl;
+    this->assetsByName[asset->assetData.strId]=asset;
+    std::cout << "Loaded asset " << asset->assetData.strId << " from file" << std::endl;
 }
 
 bool AssetManager::LoadAsset(const char* assetPath)
@@ -163,7 +171,7 @@ bool AssetManager::LoadAssetPKG(const char* assetsFilePath)
     file.read(reinterpret_cast<char*>(&count), sizeof(size_t));
 
     //iterar por sobre los assets del paquete
-    for(int i = 0; i++; i<count)
+    for(int i = 0; i<count; i++)
     {
         AssetData data;
         file.read(reinterpret_cast<char*>(&data), sizeof(AssetData));
@@ -174,21 +182,24 @@ bool AssetManager::LoadAssetPKG(const char* assetsFilePath)
 
 void AssetManager::ReleaseAllAssets()
 {
-    for(int i= 0; i++ ; i<assets.size())
+    for(int i= 0; i<assets.size(); i++)
     {
         assetsByName.erase(assets[i]->assetData.strId);
         DeleteTrashCan.push_back(assets[i]);
     }
 }
 
-void AssetManager::ClearTrashCan()
+void AssetManager::ClearTrashCan(bool destructor)
 {
     //borra de la lista de assets
     for(auto& asset : DeleteTrashCan)
     {
         assets.erase(std::remove(assets.begin(), assets.end(), asset), assets.end());
-        //libera los recursos del asset a borrar
-        asset->Release();
+        if(!destructor)
+        {
+            //libera los recursos del asset a borrar
+            asset->Release();
+        }
     }
 
     DeleteTrashCan.clear();
@@ -197,5 +208,5 @@ void AssetManager::ClearTrashCan()
 AssetManager::~AssetManager()
 {
     this->ReleaseAllAssets();
-    this->ClearTrashCan();
+    this->ClearTrashCan(true);
 }

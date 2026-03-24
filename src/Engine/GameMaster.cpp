@@ -21,7 +21,7 @@ void GameMaster::Update(float deltaTime)
     if(Frame % 1800 == 0)
     {
         //cada minuto se verifica si hay basura en la papelera y se limpia
-        assetManager.ClearTrashCan();
+        assetManager.ClearTrashCan(false);
     }
 }
 
