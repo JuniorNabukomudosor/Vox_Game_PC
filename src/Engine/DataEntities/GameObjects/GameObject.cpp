@@ -1,17 +1,45 @@
 #include<Engine/DataEntities/GameObjects/GameObject.h>
 
-GameObject::GameObject()
+GameObject::GameObject(GameObjectData data)
+:  gameObjectData(data), asset(nullptr), attachedBehaviours(std::vector<IBehaviour>())
 {}
 
-GameObject::GameObject(std::shared_ptr<IAsset> assetPointer)
-:Asset(assetPointer){}
-
-void GameObject::SetAsset(std::shared_ptr<IAsset> asset)
+void GameObject::Start()
 {
-    this->Asset = asset;
+    for(auto& behaviour : attachedBehaviours)
+    {
+        behaviour.Start();
+    }
+}
+
+void GameObject::Update(float deltatime)
+{
+    for(auto& behaviour : attachedBehaviours)
+    {
+        behaviour.Update(deltatime);
+    }
+}
+
+void GameObject::LateUpdate(float deltatime)
+{
+    for(auto& behaviour : attachedBehaviours)
+    {
+        behaviour.LateUpdate(deltatime);
+    }
+}
+
+void GameObject::SetAsset(std::shared_ptr<IAsset> assetPointer)
+{
+    this->asset=assetPointer;
 }
 
 const AssetType GameObject::GetAssetType() const
 {
-    return this->Asset->GetAssetType();
+    if(this->asset != nullptr)
+    {
+        return this->asset.get()->GetAssetType();
+    }else
+    {
+        return AssetType::Uknown;
+    }
 }

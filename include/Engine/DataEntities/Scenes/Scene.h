@@ -6,20 +6,21 @@
 #include <Engine/Assets/AssetTypeEnum.h>
 #include <Engine/DataEntities/Scenes/SceneData.h>
 
+class SceneManager;
 
 class Scene
 {
     private:
 
-    SceneData data;
+    SceneData sceneData;
 
     std::vector<char[64]> necessaryAssetsStrIds;
     
     std::vector<GameObject> gameObjects;
     //mapa: {ID, vector_id}
     std::unordered_map<std::string, size_t> gameObjecsbyIDs;
-    //mapa: {Type, ID}
-    std::unordered_map<AssetType, std::string> gameObjectsbyType;
+    //mapa: {Type, vector<ID>}
+    std::unordered_map<AssetType, std::vector<std::string>> gameObjectsbyType;
 
     public:
 
@@ -29,5 +30,17 @@ class Scene
     //run on the first frame of the game
     void Start();
     //here runs scripts and functions for every gameobject
-    void Update();
+    void Update(float deltatime);
+    //run after every update
+    void LateUpdate(float deltatime);
+
+    void AddGameObject(GameObject object);
+    std::vector<GameObject>& GetGameObjectsByType(AssetType& type);
+    GameObject&  GetGameObjectByID(std::string& id);
+    void DeleteGameObjectByID(std::string& id);
+    void SetSavePath(const char* path);
+
+    void Exit();
+
+    friend class SceneManager;
 };
