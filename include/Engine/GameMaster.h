@@ -5,7 +5,6 @@
 #include <Engine/Web/WebManager.h>
 #include <Engine/DevelopmentTools/AssetTools.h>
 
-
 class GameMaster
 {
     private:

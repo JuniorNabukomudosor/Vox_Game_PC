@@ -18,4 +18,16 @@ constexpr const char* AssetTypeToStr(AssetType a)
         case AssetType::Uknown: return "?";
         default: return "?";
     }
+};
+
+namespace std
+{
+    template <>
+    struct hash<AssetType> 
+    {
+        size_t operator()(const AssetType& t) const noexcept
+        {
+            return static_cast<size_t>(t);
+        }
+    };
 }

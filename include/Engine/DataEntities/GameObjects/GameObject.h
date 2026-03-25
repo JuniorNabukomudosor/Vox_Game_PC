@@ -13,6 +13,8 @@ class GameObject
     
     GameObject();
     GameObject(std::shared_ptr<IAsset> assetPointer);
+    void Start();
+    void Update();
     void SetAsset(std::shared_ptr<IAsset> asset);
     const AssetType GetAssetType() const;
 };
