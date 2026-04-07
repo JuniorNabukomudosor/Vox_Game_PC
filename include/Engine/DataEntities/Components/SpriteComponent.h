@@ -11,7 +11,7 @@ class SpriteComponent : public Component
 
     public:
     SpriteComponent(std::shared_ptr<Sprite> sprite);
-    void Draw();
+    void Draw(Vector2& position);
 
     friend class GameObject;
 };
