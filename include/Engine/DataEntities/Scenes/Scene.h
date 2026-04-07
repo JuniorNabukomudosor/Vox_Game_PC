@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <string>
 #include <Engine/Assets/AssetTypeEnum.h>
+#include <Engine/Assets/AssetTypesIncludes.h>
 #include <Engine/DataEntities/Scenes/SceneData.h>
 
 class SceneManager;
@@ -14,13 +15,13 @@ class Scene
 
     SceneData sceneData;
 
-    std::vector<char[64]> necessaryAssetsStrIds;
+    std::vector<std::string> necessaryAssetsStrIds;
     
-    std::vector<GameObject> gameObjects;
+    std::vector<std::shared_ptr<GameObject>> gameObjects;
     //mapa: {ID, vector_id}
-    std::unordered_map<std::string, size_t> gameObjecsbyIDs;
+    std::unordered_map<std::string, std::shared_ptr<GameObject>> gameObjecsbyIDs;
     //mapa: {Type, vector<ID>}
-    std::unordered_map<AssetType, std::vector<std::string>> gameObjectsbyType;
+    std::unordered_map<AssetType, std::vector<std::shared_ptr<GameObject>>> gameObjectsbyType;
 
     public:
 
@@ -34,7 +35,7 @@ class Scene
     //run after every update
     void LateUpdate(float deltatime);
 
-    void AddGameObject(GameObject object);
+    void AddGameObject(GameObject& object);
     std::vector<GameObject>& GetGameObjectsByType(AssetType& type);
     GameObject&  GetGameObjectByID(std::string& id);
     void DeleteGameObjectByID(std::string& id);

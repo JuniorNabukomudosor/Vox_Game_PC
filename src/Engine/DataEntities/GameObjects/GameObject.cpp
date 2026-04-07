@@ -1,7 +1,7 @@
 #include<Engine/DataEntities/GameObjects/GameObject.h>
 
 GameObject::GameObject(GameObjectData data)
-:  gameObjectData(data), asset(nullptr), attachedBehaviours(std::vector<IBehaviour>())
+:  gameObjectData(data), attachedBehaviours(std::vector<IBehaviour>())
 {}
 
 void GameObject::Start()
@@ -30,16 +30,5 @@ void GameObject::LateUpdate(float deltatime)
 
 void GameObject::SetAsset(std::shared_ptr<IAsset> assetPointer)
 {
-    this->asset=assetPointer;
-}
-
-const AssetType GameObject::GetAssetType() const
-{
-    if(this->asset != nullptr)
-    {
-        return this->asset.get()->GetAssetType();
-    }else
-    {
-        return AssetType::Uknown;
-    }
+    
 }

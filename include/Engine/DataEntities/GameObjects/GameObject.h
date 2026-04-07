@@ -4,6 +4,7 @@
 #include <Engine/Assets/AssetTypeEnum.h>
 #include <Engine/DataEntities/GameObjects/GameObjectData.h>
 #include <Engine/DataEntities/Behaviours/IBehaviour.h>
+#include <Engine/DataEntities/Components/Component.h>
 
 class Scene;
 
@@ -11,11 +12,10 @@ class GameObject
 {
     private:
     GameObjectData gameObjectData;
-    std::shared_ptr<IAsset> asset;
     std::vector<IBehaviour> attachedBehaviours;
 
     public:
-    
+    std::vector<std::unique_ptr<Component>> components;
     GameObject(GameObjectData data);
     
     //run at first frame
@@ -25,7 +25,19 @@ class GameObject
     //run behaviours after de update at same deltatime
     void LateUpdate(float deltatime);
     void SetAsset(std::shared_ptr<IAsset> asset);
-    const AssetType GetAssetType() const;
+
+    template<typename T>
+    T* GetComponent()
+    {
+        for(auto& c : components)
+        {
+            if(auto casted = dynamic_cast<T*>(c.get()))
+            {
+                return casted;
+            }
+        }
+        return nullptr;
+    }
 
     friend class Scene;
 };
